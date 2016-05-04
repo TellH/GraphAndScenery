@@ -48,6 +48,8 @@ public:
 
     void dfs(int vex, bool *bVisited, int index,int* route, vector<Route> &routeList);
     vector<Route> findVisitRoute(int startPoint);
+
+    void findShortestRoute(int start, int end);
 };
 
 

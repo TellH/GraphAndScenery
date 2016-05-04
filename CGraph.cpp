@@ -3,6 +3,7 @@
 //
 
 #include <cstring>
+#include <iostream>
 #include "CGraph.h"
 
 CGraph::CGraph(int num) {
@@ -41,9 +42,9 @@ vector<Route> CGraph::findVisitRoute(int startPoint) {
     memset(route, 0, sizeof(route));
     bool *bVisited = new bool[m_VexNum];
     for (int i = 0; i < m_VexNum; ++i) {
-        bVisited[i]= false;
+        bVisited[i] = false;
     }
-    memset(bVisited,false, sizeof(bVisited));
+    memset(bVisited, false, sizeof(bVisited));
     dfs(startPoint, bVisited, 0, route, routeList);
     return routeList;
 }
@@ -70,10 +71,65 @@ void CGraph::dfs(int vex, bool *bVisited, int index, int *route, vector<Route> &
             if (m_AdjMatrix[vex][i] >= INF_LEN || vex == i || bVisited[i])
                 continue;
             dfs(i, bVisited, index, route, routeList);
-            bVisited[i]= false;
+            bVisited[i] = false;
         }
     }
 }
+
+void CGraph::findShortestRoute(int start, int end) {
+    Route route(m_VexNum);
+    int *dis = new int[m_VexNum];
+    int *way = new int[m_VexNum];
+    int *book = new int[m_VexNum];
+    for (int i = 0; i < m_VexNum; i++) {
+        dis[i] = m_AdjMatrix[start][i];
+        book[i] = 0;
+        way[i] = start;
+    }
+    book[start] = 1;
+    //Dijkstra算法的核心代码
+    for (int i = 0; i < m_VexNum; i++) {
+        //找出离源点最近的点
+        int min = INF_LEN;
+        int min_point = start;
+        for (int j = 0; j < m_VexNum; j++) {
+            if (book[j] == 0 && dis[j] < min) {
+                min = dis[j];
+                min_point = j;
+            }
+        }
+        //start到end的最短路径已经找到
+        if (min_point == end) {
+            break;
+        }
+        book[min_point] = 1;
+        //遍历min_point的邻接节点，更新dis数组和way数组
+        for (int v = 0; v < m_VexNum; v++) {
+            if (m_AdjMatrix[min_point][v] < INF_LEN) {
+                if (dis[v] > dis[min_point] + m_AdjMatrix[min_point][v]) {
+                    dis[v] = dis[min_point] + m_AdjMatrix[min_point][v];
+                    way[v] = min_point;
+                }
+            }
+        }
+    }
+    //简易栈
+    int result[100];
+    int index = 0;
+    int temp = end;
+    result[index++] = temp;
+    while (temp != start) {
+        temp = way[temp];
+        result[index++] = temp;
+    }
+    for (int k = index - 1; k > 0; --k) {
+        cout << spots[result[k]]->name << "->";
+    }
+    cout << spots[result[0]]->name << endl;
+    cout << "Shortest distance is:" << dis[end] << endl;
+}
+
+
 
 
 

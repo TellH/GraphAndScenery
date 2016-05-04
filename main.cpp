@@ -98,6 +98,14 @@ int main() {
             }
                 break;
             case 4:
+                cout<<"==============Ì½Ë÷×î¶ÌÂ·¾¶============"<<endl;
+                for (int i = 0; i < spots.size(); ++i) {
+                    cout << i << "--" << spots.at(i)->name << endl;
+                }
+                int startPoint,endPoint;
+                cin>>startPoint;
+                cin>>endPoint;
+                graph->findShortestRoute(spots.at(startPoint)->id,spots.at(endPoint)->id);
                 break;
             case 5:
                 break;
