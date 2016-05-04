@@ -35,5 +35,49 @@ void CGraph::build() {
     }
 }
 
+vector<Route> CGraph::findVisitRoute(int startPoint) {
+    vector<Route> routeList;
+    int *route = new int[m_VexNum];
+    memset(route, 0, sizeof(route));
+    bool *bVisited = new bool[m_VexNum];
+    for (int i = 0; i < m_VexNum; ++i) {
+        bVisited[i]= false;
+    }
+    memset(bVisited,false, sizeof(bVisited));
+    dfs(startPoint, bVisited, 0, route, routeList);
+    return routeList;
+}
+
+void CGraph::dfs(int vex, bool *bVisited, int index, int *route, vector<Route> &routeList) {
+    bVisited[vex] = true;
+    route[index++] = vex;
+    bool allVisited = true;
+    for (int i = 0; i < m_VexNum; ++i) {
+        if (!bVisited[i]) {
+            allVisited = false;
+            break;
+        }
+    }
+    if (allVisited) {
+        //保存路径
+        Route r(m_VexNum);
+        for (int i = 0; i < m_VexNum; ++i) {
+            r.vexs[i] = route[i];
+        }
+        routeList.push_back(r);
+    } else {
+        for (int i = 0; i < m_VexNum; ++i) {
+            if (m_AdjMatrix[vex][i] >= INF_LEN || vex == i || bVisited[i])
+                continue;
+            dfs(i, bVisited, index, route, routeList);
+            bVisited[i]= false;
+        }
+    }
+}
+
+
+
+
+
 
 

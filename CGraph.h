@@ -45,6 +45,9 @@ public:
     }
 
     void build();
+
+    void dfs(int vex, bool *bVisited, int index,int* route, vector<Route> &routeList);
+    vector<Route> findVisitRoute(int startPoint);
 };
 
 

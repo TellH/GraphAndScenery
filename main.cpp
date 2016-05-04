@@ -1,14 +1,14 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <string>
 #include <map>
-#include "ScenicSpot.h"
 #include "Path.h"
+#include "ScenicSpot.h"
 #include "CGraph.h"
+#include <string>
 
 using namespace std;
-
+string oo;
 bool bRunning = true;
 map<int, ScenicSpot *> spots;
 vector<Path *> paths;
@@ -47,8 +47,8 @@ int main() {
             }
                 break;
             case 2: {
-                if (graph==NULL) {
-                    cout<<"你的景点图还没创建呢~"<<endl;
+                if (graph == NULL) {
+                    cout << "你的景点图还没创建呢~" << endl;
                     break;
                 }
                 cout << "========顶点========" << endl;
@@ -67,11 +67,35 @@ int main() {
                 for (int i = 0; i < graph->getVexNum(); ++i) {
                     if (matrix[num][i] == CGraph::INF_LEN || i == num)
                         continue;
-                    cout << spots.at(num)->name<<"->"<<spots[i]->name<<" "<<matrix[num][i]<<"m"<<endl;
+                    cout << spots.at(num)->name << "->" << spots[i]->name << " " << matrix[num][i] << "m" << endl;
                 }
             }
                 break;
-            case 3:
+            case 3: {
+                cout << "===========旅游景点导航===========" << endl;
+                map<int, ScenicSpot *> spots = graph->getSpots();
+                for (int i = 0; i < spots.size(); ++i) {
+                    cout << i << "--" << spots.at(i)->name << endl;
+                }
+                cout << "请输入起始点编号：";
+                int num;
+                cin >> num;
+                if (num < 0 || num > spots.size())
+                    break;
+                vector<Route> routeList = graph->findVisitRoute(spots.at(num)->id);
+                for (int j = 0; j < routeList.size(); ++j) {
+                    Route route = routeList.at(j);
+                    cout<<"路线"<<j<<":";
+                    for (int i = 0; i < graph->getVexNum()-1; ++i) {
+                        int spotId = route.vexs[i];
+                        ScenicSpot *spot = spots[spotId];
+                        cout<<spot->name<<"->";
+                    }
+                    int spotId = route.vexs[graph->getVexNum()-1];
+                    ScenicSpot *spot = spots[spotId];
+                    cout<<spot->name<<endl;
+                }
+            }
                 break;
             case 4:
                 break;

@@ -12,4 +12,10 @@ struct Path {
     int length;
     Path(int point1, int point2, int length) : point1(point1), point2(point2), length(length) { }
 };
+struct Route {
+    int *vexs;
+    Route(int vexCount) {
+        vexs = new int[vexCount];
+    }
+};
 #endif //GRAPHANDSCENERY_PATH_H
