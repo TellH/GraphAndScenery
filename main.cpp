@@ -109,7 +109,11 @@ int main() {
                 cin>>endPoint;
                 graph->findShortestRoute(spots.at(startPoint)->id,spots.at(endPoint)->id);
                 break;
-            case 5:
+            case 5:{
+                cout<<"==========铺设电路规划========"<<endl;
+                cout<<"在以下两个景点之间铺设电路:"<<endl;
+                graph->designPath();
+            }
                 break;
             case 0:
                 bRunning = false;

@@ -129,6 +129,63 @@ void CGraph::findShortestRoute(int start, int end) {
     cout << "Shortest distance is:" << dis[end] << endl;
 }
 
+void CGraph::designPath() {
+    int len = 0;
+    Path *paths = findMinTreeWithPrim(len);
+    for (int i = 0; i < m_VexNum - 1; ++i) {
+        cout << spots[paths[i].point1]->name << "--" << spots[paths[i].point2]->name << "  " << paths[i].length << endl;
+    }
+    cout << "total length:" << len << endl;
+}
+
+Path *CGraph::findMinTreeWithPrim(int &len) {
+    Path *paths = new Path[m_VexNum - 1];
+    int *distanceToTree = new int[m_VexNum];
+    Path *edgeToTree = new Path[m_VexNum];
+    int *book = new int[m_VexNum];//记录顶点是否被添加到树中
+    //初始化
+    for (int i = 0; i < m_VexNum; ++i) {
+        distanceToTree[i] = m_AdjMatrix[0][i];
+        edgeToTree[i].point1 = i;
+        edgeToTree[i].point2 = 0;
+        edgeToTree[i].length = distanceToTree[i];
+        book[i] = 0;
+    }
+    book[0] = 1;
+    int count = 1;
+    //prim算法核心代码
+    while (count != m_VexNum) {
+        int min = INF_LEN;
+        int vexToTree = 0;
+        //从1开始可以了，因为0号顶点一开始就已经添加树中
+        for (int i = 1; i < m_VexNum; ++i) {
+            if (book[i] == 0 && min > distanceToTree[i]) {
+                min = distanceToTree[i];
+                vexToTree = i;
+            }
+        }
+        len += min;
+        book[vexToTree] = 1;
+        paths[count - 1].point1 = edgeToTree[vexToTree].point1;
+        paths[count - 1].point2 = edgeToTree[vexToTree].point2;
+        paths[count - 1].length = edgeToTree[vexToTree].length;
+        //遍历所有vexToTree的邻接节点，更新数组distanceToTree
+        for (int i = 0; i < m_VexNum; ++i) {
+            if (book[i] == 0 && m_AdjMatrix[vexToTree][i] < distanceToTree[i]) {
+                distanceToTree[i] = m_AdjMatrix[vexToTree][i];
+                edgeToTree[i].point2 = vexToTree;
+                edgeToTree[i].length = m_AdjMatrix[vexToTree][i];
+            }
+        }
+        count++;
+    }
+    return paths;
+}
+
+
+
+
+
 
 
 

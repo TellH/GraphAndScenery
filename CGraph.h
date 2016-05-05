@@ -13,20 +13,21 @@
 
 class CGraph {
 private:
-    int** m_AdjMatrix;
+    int **m_AdjMatrix;
     map<int, ScenicSpot *> spots;
     vector<Path *> paths;
     int m_VexNum;
 
 public:
-    static const int INF_LEN=99999999;
+    static const int INF_LEN = 99999999;
+
     CGraph(int num);
 
     int getVexNum() const {
         return m_VexNum;
     }
 
-    int** getMatrix(){ return m_AdjMatrix;}
+    int **getMatrix() { return m_AdjMatrix; }
 
     const vector<Path *> &getPaths() const {
         return paths;
@@ -46,10 +47,15 @@ public:
 
     void build();
 
-    void dfs(int vex, bool *bVisited, int index,int* route, vector<Route> &routeList);
+    void dfs(int vex, bool *bVisited, int index, int *route, vector<Route> &routeList);
+
     vector<Route> findVisitRoute(int startPoint);
 
     void findShortestRoute(int start, int end);
+
+    void designPath();
+
+    Path *findMinTreeWithPrim(int &len);
 };
 
 

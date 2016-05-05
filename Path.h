@@ -10,6 +10,9 @@ struct Path {
     int point1;
     int point2;
     int length;
+
+    Path() { }
+
     Path(int point1, int point2, int length) : point1(point1), point2(point2), length(length) { }
 };
 struct Route {
