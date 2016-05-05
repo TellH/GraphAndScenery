@@ -103,7 +103,9 @@ int main() {
                     cout << i << "--" << spots.at(i)->name << endl;
                 }
                 int startPoint,endPoint;
+                cout<<"请输入起点的编号："<<endl;
                 cin>>startPoint;
+                cout<<"请输入终点的编号："<<endl;
                 cin>>endPoint;
                 graph->findShortestRoute(spots.at(startPoint)->id,spots.at(endPoint)->id);
                 break;
